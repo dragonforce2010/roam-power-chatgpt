@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom'
 import React from 'react'
 import ChatSideDrawer from './chat-sidedrawer'
 
-const command_name_test = 'michael is awesome'
+const command_name_chatgpt = 'chatgpt'
 let root: HTMLElement;
 window.showChatDrawer = true;
 
@@ -13,13 +13,13 @@ const addCommands = () => {
   window.roamAlphaAPI.ui
     .commandPalette
     .addCommand({
-      label: command_name_test,
+      label: command_name_chatgpt,
       callback: () => { window.showChatDrawer = true }
     })
 }
 
 const removeCommands = () => {
-  window.roamAlphaAPI.ui.commandPalette.removeCommand({ label: command_name_test })
+  window.roamAlphaAPI.ui.commandPalette.removeCommand({ label: command_name_chatgpt })
 }
 
 function onload() {
