@@ -1,0 +1,32 @@
+:root {
+  --brand-1: #30b30c;
+  --brand-2: #59c23c;
+  --brand-3: #c1e8b6;
+  --marked-bg-color: #7bcf68;
+}
+.ChatApp,
+.MessageContainer,
+.Navbar,
+.Message .Bubble,
+.QuickReplies,
+.ChatFooter {
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.Navbar {
+  border: 0;
+  box-shadow: none;
+}
+.Navbar-title {
+  color: #7ed321;
+}
+.Navbar-main {
+  min-height: 48px;
+}
+.Message.left .Bubble {
+  background-color: #b8e986;
+}
+.Message.right .Bubble {
+  background-color: rgba(245, 166, 35, 0.63);
+  color: #000000;
+}

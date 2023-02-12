@@ -1,0 +1,38 @@
+.navigationContainer {
+  margin-left: 8px !important;
+  width: 200px;
+}
+
+.navigationContainer .ant-layout-sider-children {
+  display: flex !important;
+  flex-direction: column;
+}
+
+.navigationContainer .section1 {
+  display: flex !important;
+  flex-direction: column;
+  flex: 10;
+  /* flex-grow: 1; */
+}
+
+.navigationContainer .section2 {
+  display: flex !important;
+  flex-direction: column;
+  margin-bottom: 20px;
+  flex: 4;
+}
+
+.ant-menu-vertical {
+  border-inline: none !important;
+}
+
+.ant-layout-sider {
+  margin: 0 !important;
+}
+
+.Composer--lg {
+  padding-bottom: 0px !important;
+}
+/* .ant-layout-sider-trigger {
+  max-width: 190px !important;
+} */
