@@ -2488,15 +2488,13 @@ html {
   }
 }
 .S--wide {
-  -ms-flex-align: center;
+  /* -ms-flex-align: center;
   align-items: center;
-  background: url(//img.alicdn.com/tfs/TB1C.3nefb2gK0jSZK9XXaEgFXa-2880-2000.jpg)
-    0 0 no-repeat;
   background-size: cover;
   -ms-flex-pack: center;
   display: -ms-flexbox;
   display: flex;
-  justify-content: center;
+  justify-content: center; */
   width: 100%;
 }
 .S--wide #root {

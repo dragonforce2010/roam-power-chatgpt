@@ -8,7 +8,7 @@ import "./index.css"
 import React, { useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import NavigationPanel from '../navigation'
-import config from './chat-config'
+import { chatConfig, allMessages, Message } from './chat-config'
 
 
 interface ChatProUIProps {
@@ -26,12 +26,13 @@ export default function ChatProUI({
       components: {
         'hello': <div>hello world</div>
       },
-      config: config,
+      config: chatConfig,
       requests: {
         send: function (msg: any) {
           if (msg.type === 'text') {
+            allMessages.push(msg)
+
             return {
-              // url: { serviceUrl }, // 'https://chatgpt-service.mudkip.me/api/chat'
               url: 'https://chatgpt-service.mudkip.me/api/chat',
               type: 'post',
               contentType: 'application/json',
@@ -39,11 +40,6 @@ export default function ChatProUI({
               data: {
                 "Message": msg.content.text
               },
-              headers: {
-                "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
-                "Access-Control-Allow-Headers": "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
-              }
             };
           }
         }
@@ -51,23 +47,26 @@ export default function ChatProUI({
       handlers: {
         parseResponse: function (res: any, requestType: any) {
           console.log('parse response from backend:', res, requestType)
-          // if (requestType === 'send') {
-          console.log('handle response: ', requestType, res)
-          return [
-            {
-              type: 'text',
-              content: {
-                // text: res.content,
-                text: res?.reply ? JSON.parse(res?.reply)?.content : res.errMsg
-              }
+          // console.log('handle response: ', requestType, res)
+          let replyMessage: Message = {
+            type: 'text',
+            content: {
+              // 解析从apaas的faas返回的结果
+              // text: res?.reply ? JSON.parse(res?.reply)?.content : res.errMsg 
+              // 解析从openapi返回的结果
+              text: (res?.content as string).replace(/^[\s,\.\?]+/, '')
             }
-          ]
+          }
+          allMessages.push(replyMessage)
+          // save messages each time when get a response from chatgpt
+          localStorage.setItem('messages', JSON.stringify(allMessages))
+          return replyMessage
         }
       }
     });
 
     bot.run();
-  }, [serviceUrl]);
+  }, []);
 
   // 注意 wrapper 的高度
   return <div className='container'>

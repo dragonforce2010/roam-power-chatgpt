@@ -14,7 +14,7 @@ const ChatSideDrawer: React.FC<ChatSideDrawerProps> = ({ }) => {
     const handleChatDrawerVisibilityChange = () => {
       setOpen(window.showChatDrawer as boolean)
     }
-    const intervalId = setInterval(handleChatDrawerVisibilityChange, 500)
+    const intervalId = setInterval(handleChatDrawerVisibilityChange, 100)
     return () => {
       clearInterval(intervalId);
     }

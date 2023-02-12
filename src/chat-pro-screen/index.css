@@ -1,5 +1,5 @@
 .chatScreen {
-  margin-left: 10px;
+  margin-left: 0px;
   height: 100%;
   flex-grow: 1;
 }
@@ -7,7 +7,7 @@
 .container {
   display: flex;
   width: 100%;
-  height: calc(89vh);
+  height: calc(100vh);
 }
 
 .leftNavigationPanel {
