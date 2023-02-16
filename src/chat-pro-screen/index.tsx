@@ -7,8 +7,8 @@ import "./index.css"
 
 import React, { useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
-import NavigationPanel from '../navigation'
-import { chatConfig, allMessages, Message } from './chat-config'
+import { chatConfig } from './chat-config'
+import { allMessages, Message, persistantMessages } from '../store'
 
 
 interface ChatProUIProps {
@@ -32,6 +32,14 @@ export default function ChatProUI({
           if (msg.type === 'text') {
             allMessages.push(msg)
 
+            allMessages.push({
+              type: 'text',
+              content: {
+                // 解析从openapi返回的结果
+                text: msg.content.text
+              }
+            })
+
             return {
               url: 'https://chatgpt-service.mudkip.me/api/chat',
               type: 'post',
@@ -51,15 +59,12 @@ export default function ChatProUI({
           let replyMessage: Message = {
             type: 'text',
             content: {
-              // 解析从apaas的faas返回的结果
-              // text: res?.reply ? JSON.parse(res?.reply)?.content : res.errMsg 
               // 解析从openapi返回的结果
               text: (res?.content as string).replace(/^[\s,\.\?]+/, '')
             }
           }
-          allMessages.push(replyMessage)
           // save messages each time when get a response from chatgpt
-          localStorage.setItem('messages', JSON.stringify(allMessages))
+          persistantMessages(replyMessage)
           return replyMessage
         }
       }
@@ -70,9 +75,6 @@ export default function ChatProUI({
 
   // 注意 wrapper 的高度
   return <div className='container'>
-    {/* <div className='leftNavigationPanel'>
-      <NavigationPanel></NavigationPanel>
-    </div> */}
     <div className='chatScreen' ref={wrapper} />
   </div>;
 }

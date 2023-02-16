@@ -30,7 +30,9 @@ export declare type Registry = {
 };
 declare global {
   interface Window {
-    ChatSDK: {},
+    showChatDrawer: boolean;
+    ChatSDK: {
+    },
     RoamLazy?: {
       JSZip: () => Promise<typeof JSZip>;
       Marked: () => Promise<typeof marked>;
