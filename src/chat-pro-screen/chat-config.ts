@@ -50,7 +50,7 @@ export const initialMessages = (): Message[] => {
               action: 'send',
               text: 'Click to know more about AGI',
               type: 'default',
-              title: 'Something About AGI',
+              title: 'About AGI',
               params: {
                 content: 'Something About AGI'
               }

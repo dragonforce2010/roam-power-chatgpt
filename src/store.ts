@@ -7,23 +7,26 @@ export interface Message {
   }
 }
 
-const maxMessageCount = 1
+const maxMessageCount = 10
+export let allMessages: Message[] = []
+
+export const init = () => {
+  console.log('init messages')
+  allMessages = fetchHistoryMessages()
+}
 
 export const fetchHistoryMessages = (): Message[] => {
   let storedMessages = localStorage.getItem('messages')
-  console.log('stored messages: ', storedMessages)
   return storedMessages ? JSON.parse(storedMessages) : []
 }
-
-
-export let allMessages: Message[] = fetchHistoryMessages()
 
 // persistant all messages to localstorage
 export const persistantMessages = (message: Message) => {
   allMessages.push(message)
   // check if messages volume exceeds the predefined max count
-  while (allMessages.length >= maxMessageCount) {
+  while (allMessages.length > maxMessageCount) {
     // remove the oldest message
+    console.log(allMessages)
     allMessages = allMessages.slice(1)
   }
   localStorage.setItem('messages', JSON.stringify(allMessages))

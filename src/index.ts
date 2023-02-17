@@ -1,9 +1,9 @@
-import Title from 'antd/es/skeleton/Title'
 import "../types"
 import { Drawer } from '@blueprintjs/core'
 import ReactDOM from 'react-dom'
 import React from 'react'
 import ChatSideDrawer from './chat-sidedrawer'
+import { init } from './store'
 
 const command_name_chatgpt = 'chatgpt'
 let root: HTMLElement;
@@ -14,7 +14,9 @@ const addCommands = () => {
     .commandPalette
     .addCommand({
       label: command_name_chatgpt,
-      callback: () => { window.showChatDrawer = true }
+      callback: () => {
+        window.showChatDrawer = true
+      }
     })
 }
 
@@ -23,6 +25,8 @@ const removeCommands = () => {
 }
 
 function onload() {
+  init()
+
   if (!root) {
     root = document.createElement('div')
   }

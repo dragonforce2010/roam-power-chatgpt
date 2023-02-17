@@ -40,6 +40,14 @@ export default function ChatProUI({
               }
             })
 
+            // persistantMessages({
+            //   type: 'text',
+            //   content: {
+            //     // 解析从openapi返回的结果
+            //     text: msg.content.text
+            //   }
+            // })
+
             return {
               url: 'https://chatgpt-service.mudkip.me/api/chat',
               type: 'post',

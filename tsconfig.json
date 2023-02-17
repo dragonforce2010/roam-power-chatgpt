@@ -3,6 +3,8 @@
   "include": ["src"],
   "exclude": ["node_modules"],
   "compilerOptions": {
-    "sourceMap": true
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "jsx": "react"
   }
 }
