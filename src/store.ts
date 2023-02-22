@@ -7,13 +7,14 @@ export interface Message {
   }
 }
 
-const maxMessageCount = 10
+const maxMessageCount = 10000
 export let allMessages: Message[] = []
 
 export const init = () => {
   console.log('init messages')
   allMessages = fetchHistoryMessages()
 }
+
 
 export const fetchHistoryMessages = (): Message[] => {
   let storedMessages = localStorage.getItem('messages')
@@ -31,3 +32,6 @@ export const persistantMessages = (message: Message) => {
   }
   localStorage.setItem('messages', JSON.stringify(allMessages))
 }
+
+
+init()
