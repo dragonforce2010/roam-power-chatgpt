@@ -8,7 +8,7 @@ import "./index.css"
 import React, { useEffect, useRef, useState } from 'react';
 import { ErrorToaster } from '../toaster'
 import ReactDOM from 'react-dom';
-import { chatConfig } from './chat-config'
+import { getChatConfig } from './chat-config'
 import { allMessages, Message, persistantMessages } from '../store'
 
 
@@ -33,27 +33,17 @@ export default function ChatProUI({
       components: {
         'hello': <div>hello world</div>
       },
-      config: chatConfig,
+      config: getChatConfig(),
       requests: {
         send: function (msg: any) {
           if (msg.type === 'text') {
-            allMessages.push(msg)
-
             allMessages.push({
               type: 'text',
               content: {
-                // 解析从openapi返回的结果
                 text: msg.content.text
-              }
+              },
+              position: 'right'
             })
-
-            // persistantMessages({
-            //   type: 'text',
-            //   content: {
-            //     // 解析从openapi返回的结果
-            //     text: msg.content.text
-            //   }
-            // })
 
             return {
               // url: 'https://chatgpt-service.mudkip.me/api/chat',
@@ -65,6 +55,9 @@ export default function ChatProUI({
                 "Message": msg.content.text,
                 "Context": contextRef.current
               },
+              error: function (xhr: any, status: any, error: any) {
+                alert(error)
+              }
             };
           }
         }
@@ -78,6 +71,7 @@ export default function ChatProUI({
             ErrorToaster.show(res.error)
             return {
               type: 'text',
+              position: 'left',
               content: {
                 text: 'Hmmm... Something went wrong with the chatgpt server 😔 Please try again later'
               }
@@ -85,10 +79,13 @@ export default function ChatProUI({
           }
           let replyMessage: Message = {
             type: 'text',
+            position: 'left',
             content: {
-              // 解析从openapi返回的结果
               text: (res?.content as string).replace(/^[\s,\.\?]+/, '')
-            }
+            },
+            // user: {
+            //   avatar: string;
+            // };
           }
           // save messages each time when get a response from chatgpt
           persistantMessages(replyMessage)
@@ -102,7 +99,6 @@ export default function ChatProUI({
     bot.run();
   }, []);
 
-  // 注意 wrapper 的高度
   return <div className='container'>
     <div className='chatScreen' ref={wrapper} />
   </div>;

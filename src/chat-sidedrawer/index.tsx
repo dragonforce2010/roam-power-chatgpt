@@ -23,6 +23,8 @@ const ChatSideDrawer: React.FC<ChatSideDrawerProps> = ({ }) => {
   return <>
     <Drawer
       isOpen={open}
+      // onOpened={}
+      size={"60%"}
       onClose={() => {
         window.showChatDrawer = false
       }}

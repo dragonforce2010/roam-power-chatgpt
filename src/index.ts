@@ -26,13 +26,18 @@ const removeCommands = () => {
 
 function onload() {
   init()
+  renderComponent()
+  addCommands()
+}
 
-  if (!root) {
-    root = document.createElement('div')
+function renderComponent() {
+  if (root) {
+    root.remove()
   }
+
+  root = document.createElement('div')
   ReactDOM.render(React.createElement(ChatSideDrawer), root)
   document.body.append(root)
-  addCommands()
 }
 
 function onunload() {

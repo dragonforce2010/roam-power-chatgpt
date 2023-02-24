@@ -1,13 +1,14 @@
-import { chatConfig, initialMessages } from './chat-pro-screen/chat-config'
+import { initialMessages } from './chat-pro-screen/chat-config'
 
 export interface Message {
   type: 'system' | 'text' | 'card';
   content: { [key: string]: any } | {
     text: string
-  }
+  },
+  position?: 'left' | 'right',
 }
 
-const maxMessageCount = 10000
+const maxMessageCount = 1000
 export let allMessages: Message[] = []
 
 export const init = () => {
