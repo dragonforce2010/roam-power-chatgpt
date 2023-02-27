@@ -4,17 +4,19 @@ import React, { useEffect, useState } from 'react'
 import ChatProUI from '../chat-pro-screen'
 
 interface ChatSideDrawerProps {
-  // isOpen: boolean
 }
 
 const ChatSideDrawer: React.FC<ChatSideDrawerProps> = ({ }) => {
   const [open, setOpen] = useState(window.showChatDrawer)
+  const [model, setModel] = useState(window.extensionAPI.settings.get('aiModel') as string)
+  const [openAiKey, setOpenAiKey] = useState(window.extensionAPI.settings.get('openAiKey') as string)
 
   useEffect(() => {
-    const handleChatDrawerVisibilityChange = () => {
+    const intervalId = setInterval(() => {
       setOpen(window.showChatDrawer as boolean)
-    }
-    const intervalId = setInterval(handleChatDrawerVisibilityChange, 100)
+      setModel(window.extensionAPI.settings.get('aiModel') as string)
+      setOpenAiKey(window.extensionAPI.settings.get('openAiKey') as string)
+    }, 100)
     return () => {
       clearInterval(intervalId);
     }
@@ -23,13 +25,12 @@ const ChatSideDrawer: React.FC<ChatSideDrawerProps> = ({ }) => {
   return <>
     <Drawer
       isOpen={open}
-      // onOpened={}
       size={"60%"}
       onClose={() => {
         window.showChatDrawer = false
       }}
     >
-      <ChatProUI></ChatProUI>
+      <ChatProUI model={model} openAiKey={openAiKey}></ChatProUI>
     </Drawer>
   </>
 }

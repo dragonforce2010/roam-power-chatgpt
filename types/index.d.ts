@@ -1,4 +1,4 @@
-import { AddPullWatch, PullBlock, SidebarAction, SidebarWindow, SidebarWindowInput, WriteAction } from "./native";
+import { AddPullWatch, ExtensionAPI, PullBlock, SidebarAction, SidebarWindow, SidebarWindowInput, WriteAction } from "./native";
 import { RegisterSelection, ParseQuery, FireQuery, ConditionToDatalog, RegisterDatalogTranslator, ResultsViewComponent, QueryEditorComponent, ExportDialogComponent, QueryPageComponent, RunQuery, ListActiveQueries } from "./query-builder";
 import { RegisterCommand, UnregisterCommand } from "./smartblocks";
 import type marked from "marked";
@@ -57,6 +57,7 @@ declare global {
         };
       }>;
     };
+    extensionAPI: ExtensionAPI,
     roamAlphaAPI: {
       q: (query: string, ...params: unknown[]) => unknown[][];
       pull: (selector: string, id: number | string | [string, string]) => PullBlock;

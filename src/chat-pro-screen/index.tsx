@@ -7,17 +7,19 @@ import "./index.css"
 
 import React, { useEffect, useRef, useState } from 'react';
 import { ErrorToaster } from '../toaster'
-import ReactDOM from 'react-dom';
 import { getChatConfig } from './chat-config'
 import { allMessages, Message, persistantMessages } from '../store'
+import { PARAM_OPEN_AI_KEY, SERVICE_API_CHATV1, SERVICE_API_CHATV2, SERVICE_HOST } from '../const'
 
 
 interface ChatProUIProps {
-  // serviceUrl: string
+  model: string;
+  openAiKey: string;
 }
 
 export default function ChatProUI({
-  // serviceUrl
+  model,
+  openAiKey,
 }: ChatProUIProps) {
   const wrapper = useRef();
   const [chatContext, setChatContext] = useState('')
@@ -36,6 +38,18 @@ export default function ChatProUI({
       config: getChatConfig(),
       requests: {
         send: function (msg: any) {
+          // if (window.extensionAPI.settings.get('openAiKey') === null || window.extensionAPI.settings.get('openAiKey') === '') {
+          //   ErrorToaster.show({
+          //     icon: 'error',
+          //     message: 'open ai key is not provided!'
+          //   })
+          //   return
+          // }
+          ErrorToaster.show({
+            icon: 'error',
+            message: 'open ai key is not provided!'
+          })
+          console.log('show error message')
           if (msg.type === 'text') {
             allMessages.push({
               type: 'text',
@@ -45,15 +59,23 @@ export default function ChatProUI({
               position: 'right'
             })
 
+            let chatServiceEndpint
+            if (window.extensionAPI.settings.get(PARAM_OPEN_AI_KEY) && window.extensionAPI.settings.get(PARAM_OPEN_AI_KEY)) {
+              chatServiceEndpint = `${SERVICE_HOST}${SERVICE_API_CHATV1}`
+            } else {
+              chatServiceEndpint = `${SERVICE_HOST}${SERVICE_API_CHATV2}`
+            }
+
             return {
-              // url: 'https://chatgpt-service.mudkip.me/api/chat',
-              url: 'https://ec2-54-254-24-184.ap-southeast-1.compute.amazonaws.com/ai/chat',
+              url: chatServiceEndpint,
               type: 'post',
               contentType: 'application/json',
               dataType: 'json',
               data: {
                 "Message": msg.content.text,
-                "Context": contextRef.current
+                "Context": contextRef.current,
+                "Model": model,
+                "OpenAiKey": openAiKey
               },
               error: function (xhr: any, status: any, error: any) {
                 alert(error)
@@ -83,9 +105,6 @@ export default function ChatProUI({
             content: {
               text: (res?.content as string).replace(/^[\s,\.\?]+/, '')
             },
-            // user: {
-            //   avatar: string;
-            // };
           }
           // save messages each time when get a response from chatgpt
           persistantMessages(replyMessage)

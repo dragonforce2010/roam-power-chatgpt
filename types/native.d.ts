@@ -343,7 +343,7 @@ declare type CustomAction = {
   component: React.FC;
 };
 export declare type Action = ButtonAction | SwitchAction | InputAction | SelectAction | CustomAction;
-declare type PanelConfig = {
+export declare type PanelConfig = {
   tabTitle: string;
   settings: {
     id: string;
@@ -352,17 +352,20 @@ declare type PanelConfig = {
     action: Action;
   }[];
 };
-export declare type OnloadArgs = {
-  extensionAPI: {
-    settings: {
-      get: (k: string) => unknown;
-      getAll: () => Record<string, unknown>;
-      panel: {
-        create: (c: PanelConfig) => void;
-      };
-      set: (k: string, v: unknown) => Promise<void>;
+
+export declare type ExtensionAPI = {
+  settings: {
+    get: (k: string) => unknown;
+    getAll: () => Record<string, unknown>;
+    panel: {
+      create: (c: PanelConfig) => void;
     };
+    set: (k: string, v: unknown) => Promise<void>;
   };
+}
+
+export declare type OnloadArgs = {
+  extensionAPI: ExtensionAPI,
   extension: {
     version: string;
   };
