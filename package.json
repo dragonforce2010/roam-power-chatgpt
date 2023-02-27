@@ -11,7 +11,9 @@
     "@chatui/core": "^2.4.2",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.10",
+    "jsonwebtoken": "^9.0.0",
     "react": "^18.2.0",
+    "@uiw/react-codemirror": "4.10.4",
     "react-dom": "^18.2.0",
     "roamjs-scripts": "^0.26.26",
     "tslib": "^2.5.0"

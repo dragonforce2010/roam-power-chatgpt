@@ -1,7 +1,7 @@
 import { initialMessages } from './chat-pro-screen/chat-config'
 
 export interface Message {
-  type: 'system' | 'text' | 'card';
+  type: 'system' | 'text' | 'card' | 'codeEditor';
   content: { [key: string]: any } | {
     text: string
   },
@@ -12,7 +12,6 @@ const maxMessageCount = 1000
 export let allMessages: Message[] = []
 
 export const init = () => {
-  console.log('init messages')
   allMessages = fetchHistoryMessages()
 }
 
@@ -28,7 +27,6 @@ export const persistantMessages = (message: Message) => {
   // check if messages volume exceeds the predefined max count
   while (allMessages.length > maxMessageCount) {
     // remove the oldest message
-    console.log(allMessages)
     allMessages = allMessages.slice(1)
   }
   localStorage.setItem('messages', JSON.stringify(allMessages))

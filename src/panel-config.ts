@@ -1,20 +1,25 @@
 import { ChangeEvent } from 'react';
 import { ExtensionAPI, OnloadArgs, PanelConfig } from '../types';
-import { PARAM_AI_MODE as PARAM_AI_MODEL, PARAM_OPEN_AI_KEY } from './const';
+import { PARAM_AI_MODE as PARAM_AI_MODEL, PARAM_OPEN_AI_KEY, PARAM_USE_MY_OWN_OPEN_AI_KEY } from './const';
 
 const panelConfig: PanelConfig = {
   tabTitle: "Roam Power ChatGPT",
   settings: [
     {
+      id: PARAM_USE_MY_OWN_OPEN_AI_KEY,
+      name: "Use My Own OpenAI key",
+      description: "If you want to use your own Open AI key to get the best chatgpt experience, you need to set this to true. Believe me, if you use your own key, you will get better experience.",
+      action: {
+        type: "switch"
+      }
+    },
+    {
       id: PARAM_OPEN_AI_KEY,
       name: "Open Ai Key",
-      description: "Open Ai Key is used to interact with Open Ai Services. With your own open Ai key, you get better experience and performance",
+      description: "Open Ai Key is used to interact with Open Ai Services. With your own open Ai key, you get better experience and performance. If you dont' have one, you can create API key here https://platform.openai.com/account/api-keys",
       action: {
         type: "input",
         placeholder: "sk-xxxxxxxxxxxxxxxxxxxxxxx",
-        // onChange: (e: ChangeEvent<HTMLInputElement>) => {
-        //   console.log(e.target.value);
-        // },
       }
     }, {
       id: PARAM_AI_MODEL,
@@ -36,9 +41,6 @@ const panelConfig: PanelConfig = {
           "ada",
           "babbage",
         ],
-        // onChange(e) {
-        //   console.log(e)
-        // },
       }
     }
 
@@ -47,5 +49,6 @@ const panelConfig: PanelConfig = {
 
 export const loadSettings = (extensionAPI: ExtensionAPI) => {
   extensionAPI.settings.panel.create(panelConfig);
+  // set the default ai model to be chatgpt 3.5, wichi is text-davinci-003 
   extensionAPI.settings.set('aiModel', 'text-davinci-003')
 }

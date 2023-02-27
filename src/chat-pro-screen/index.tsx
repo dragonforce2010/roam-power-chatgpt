@@ -9,7 +9,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ErrorToaster } from '../toaster'
 import { getChatConfig } from './chat-config'
 import { allMessages, Message, persistantMessages } from '../store'
-import { PARAM_OPEN_AI_KEY, SERVICE_API_CHATV1, SERVICE_API_CHATV2, SERVICE_HOST } from '../const'
+import { PARAM_OPEN_AI_KEY, PARAM_USE_MY_OWN_OPEN_AI_KEY, SERVICE_API_CHATV1, SERVICE_API_CHATV2, SERVICE_HOST } from '../const'
+import CodeEditor from '../chat-card/code-render'
 
 
 interface ChatProUIProps {
@@ -25,6 +26,12 @@ export default function ChatProUI({
   const [chatContext, setChatContext] = useState('')
   const contextRef = useRef(chatContext)
 
+  const checkIfContainsCodeSnippet = (content: string): boolean => {
+    const pattern = /(\b(public|private|protected|class|function|if|else|for|while|do|switch|case|break|continue|try|catch|finally|throw|import|export|const|let|var|new|return|await|async)\b|\/\/.*|\/\*(.|[\r\n])*?\*\/)/;
+    console.log('pattern.test:', pattern.test(content))
+    return pattern.test(content);
+  }
+
   useEffect(() => {
     contextRef.current = chatContext
   }, [chatContext])
@@ -32,24 +39,12 @@ export default function ChatProUI({
   useEffect(() => {
     const bot = new window.ChatSDK({
       root: wrapper.current,
-      components: {
-        'hello': <div>hello world</div>
-      },
       config: getChatConfig(),
+      components: {
+        'codeEditor': CodeEditor
+      },
       requests: {
         send: function (msg: any) {
-          // if (window.extensionAPI.settings.get('openAiKey') === null || window.extensionAPI.settings.get('openAiKey') === '') {
-          //   ErrorToaster.show({
-          //     icon: 'error',
-          //     message: 'open ai key is not provided!'
-          //   })
-          //   return
-          // }
-          ErrorToaster.show({
-            icon: 'error',
-            message: 'open ai key is not provided!'
-          })
-          console.log('show error message')
           if (msg.type === 'text') {
             allMessages.push({
               type: 'text',
@@ -60,7 +55,7 @@ export default function ChatProUI({
             })
 
             let chatServiceEndpint
-            if (window.extensionAPI.settings.get(PARAM_OPEN_AI_KEY) && window.extensionAPI.settings.get(PARAM_OPEN_AI_KEY)) {
+            if (window.extensionAPI.settings.get(PARAM_USE_MY_OWN_OPEN_AI_KEY)) {
               chatServiceEndpint = `${SERVICE_HOST}${SERVICE_API_CHATV1}`
             } else {
               chatServiceEndpint = `${SERVICE_HOST}${SERVICE_API_CHATV2}`
@@ -86,10 +81,7 @@ export default function ChatProUI({
       },
       handlers: {
         parseResponse: function (res: any, requestType: any) {
-          console.log('parse response from backend:', res, requestType)
-          console.log('res?.error', res?.error)
           if (res?.error) {
-            alert(res?.error)
             ErrorToaster.show(res.error)
             return {
               type: 'text',
@@ -99,8 +91,9 @@ export default function ChatProUI({
               }
             }
           }
+
           let replyMessage: Message = {
-            type: 'text',
+            type: checkIfContainsCodeSnippet(res?.content) ? 'codeEditor' : 'text',
             position: 'left',
             content: {
               text: (res?.content as string).replace(/^[\s,\.\?]+/, '')
@@ -109,7 +102,6 @@ export default function ChatProUI({
           // save messages each time when get a response from chatgpt
           persistantMessages(replyMessage)
           setChatContext(res?.context)
-          console.log(res?.content)
           return replyMessage
         }
       }
