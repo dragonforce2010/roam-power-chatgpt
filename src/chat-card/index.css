@@ -1,0 +1,14 @@
+.code-render-container {
+  border: none;
+}
+
+.code-render-container .icon {
+  cursor: pointer;
+  color: darkorange;
+  opacity: 0.8;
+}
+
+.code-render-container span {
+  color: darkorange;
+  opacity: 0.8;
+}

@@ -1,31 +1,34 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import CodeMirror from '@uiw/react-codemirror'
+import React, { useState } from 'react'
 import { Ctx } from '../chat-types';
-import { Message } from '../store';
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { atomOneDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import { Icon } from "@blueprintjs/core";
+import './index.css'
 
 interface CodeEditorProps {
-  data: Message;
+  data: { code: string };
   ctx: Ctx;
   meta: any;
 }
 
 const CodeEditor: React.FC<CodeEditorProps> = ({ data, ctx, meta }) => {
-  console.log('data', data)
-  console.log('ctx', ctx)
-  console.log('meta', meta)
+  const copyCodeToClipboard = () => {
+    const el = document.createElement('textarea');
+    el.value = data.code;
+    document.body.appendChild(el);
+    el.select();
+    const currentScrollPosition = window.scrollY;
+    document.execCommand('copy', false);
+    window.scrollTo(0, currentScrollPosition);
+    document.body.removeChild(el);
+  }
 
-  // ctx.appendMessage({
-    // type: 'codeEditor',
-    // position: 'left',
-    // content: data
-  // })
-  return <CodeMirror
-    // value={data.content.text}
-    value="/**↵ * Definition for a binary tree node.↵ * publi… 1, inEnd);↵        ↵        return root;↵    }↵}"
-    theme="dark"
-    readOnly
-  ></CodeMirror>
+  return <div className='code-render-container'>
+    <Icon className='icon' icon="duplicate" onClick={copyCodeToClipboard} />
+    <SyntaxHighlighter language="javascript" style={atomOneDark} wrapLine wrapLongLines>
+      {data.code}
+    </SyntaxHighlighter>
+  </div>
 }
 
 export default CodeEditor

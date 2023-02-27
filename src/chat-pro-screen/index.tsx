@@ -41,7 +41,8 @@ export default function ChatProUI({
       root: wrapper.current,
       config: getChatConfig(),
       components: {
-        'codeEditor': CodeEditor
+        'code-editor': CodeEditor,
+        'default': <div>hello world</div>
       },
       requests: {
         send: function (msg: any) {
@@ -92,13 +93,30 @@ export default function ChatProUI({
             }
           }
 
-          let replyMessage: Message = {
-            type: checkIfContainsCodeSnippet(res?.content) ? 'codeEditor' : 'text',
-            position: 'left',
-            content: {
-              text: (res?.content as string).replace(/^[\s,\.\?]+/, '')
-            },
+          console.log(res?.content)
+
+          let replyMessage: Message
+          if (checkIfContainsCodeSnippet(res?.content as string)) {
+            replyMessage = {
+              type: 'card',
+              position: 'left',
+              content: {
+                code: 'code-editor',
+                data: {
+                  code: (res?.content as string).replace(/^[\s,\.\?]+/, '')
+                }
+              }
+            }
+          } else {
+            replyMessage = {
+              type: 'text',
+              position: 'left',
+              content: {
+                text: (res?.content as string).replace(/^[\s,\.\?]+/, '')
+              },
+            }
           }
+
           // save messages each time when get a response from chatgpt
           persistantMessages(replyMessage)
           setChatContext(res?.context)

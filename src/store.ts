@@ -1,10 +1,10 @@
 import { initialMessages } from './chat-pro-screen/chat-config'
 
 export interface Message {
-  type: 'system' | 'text' | 'card' | 'codeEditor';
+  type: 'system' | 'text' | 'card';
   content: { [key: string]: any } | {
     text: string
-  },
+  } | any,
   position?: 'left' | 'right',
 }
 
