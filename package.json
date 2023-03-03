@@ -1,5 +1,5 @@
 {
-  "name": "power-link-parser",
+  "name": "power-chatgpt",
   "version": "1.0.0",
   "scripts": {
     "prebuild:roam": "npm install",
