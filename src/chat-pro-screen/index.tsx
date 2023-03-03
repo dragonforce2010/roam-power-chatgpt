@@ -14,8 +14,8 @@ import CodeEditor from '../chat-card/code-render'
 
 
 interface ChatProUIProps {
-  model: string;
-  openAiKey: string;
+  model?: string;
+  openAiKey?: string;
 }
 
 export default function ChatProUI({

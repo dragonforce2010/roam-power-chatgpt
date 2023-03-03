@@ -28,6 +28,8 @@ const panelConfig: PanelConfig = {
       action: {
         type: 'select',
         items: [
+          "gpt-3.5-turbo",
+          "gpt-3.5-turbo-0301",
           "text-davinci-003",
           "text-davinci-002",
           "text-davinci-001",
@@ -50,5 +52,5 @@ const panelConfig: PanelConfig = {
 export const loadSettings = (extensionAPI: ExtensionAPI) => {
   extensionAPI.settings.panel.create(panelConfig);
   // set the default ai model to be chatgpt 3.5, wichi is text-davinci-003 
-  extensionAPI.settings.set('aiModel', 'text-davinci-003')
+  extensionAPI.settings.set('aiModel', 'gpt-3.5-turbo')
 }
