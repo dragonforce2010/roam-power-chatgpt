@@ -7,7 +7,8 @@ import { init } from './store'
 import { loadSettings } from './panel-config'
 import { OnloadArgs } from '../types'
 
-const command_name_chatgpt = 'chatgpt'
+const command_name_chatgpt = 'Roam GPT'
+
 let root: HTMLElement;
 window.showChatDrawer = true;
 
@@ -49,7 +50,6 @@ function onunload() {
     root.remove()
   }
   removeCommands()
-
 }
 
 export default {

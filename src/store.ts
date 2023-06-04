@@ -1,4 +1,6 @@
-import { initialMessages } from './chat-pro-screen/chat-config'
+// import { initialMessages } from './chat-pro-screen/chat-config'
+
+import { MessageProps } from '@chatui/core';
 
 export interface Message {
   type: 'system' | 'text' | 'card';
@@ -9,27 +11,27 @@ export interface Message {
 }
 
 const maxMessageCount = 1000
-export let allMessages: Message[] = []
+export let historyMessages: MessageProps[] = []
 
 export const init = () => {
-  allMessages = fetchHistoryMessages()
+  historyMessages = fetchHistoryMessages()
 }
 
 
-export const fetchHistoryMessages = (): Message[] => {
+export const fetchHistoryMessages = (): MessageProps[] => {
   let storedMessages = localStorage.getItem('messages')
   return storedMessages ? JSON.parse(storedMessages) : []
 }
 
 // persistant all messages to localstorage
-export const persistantMessages = (message: Message) => {
-  allMessages.push(message)
+export const persistantMessages = (message: MessageProps) => {
+  historyMessages.push(message)
   // check if messages volume exceeds the predefined max count
-  while (allMessages.length > maxMessageCount) {
+  while (historyMessages.length > maxMessageCount) {
     // remove the oldest message
-    allMessages = allMessages.slice(1)
+    historyMessages = historyMessages.slice(1)
   }
-  localStorage.setItem('messages', JSON.stringify(allMessages))
+  localStorage.setItem('messages', JSON.stringify(historyMessages))
 }
 
 
