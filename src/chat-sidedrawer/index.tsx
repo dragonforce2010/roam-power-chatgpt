@@ -4,31 +4,34 @@ import { Button, Drawer, Space } from 'antd';
 import React, { useEffect, useState } from 'react'
 import ChatProUI from '../chat-pro-screen'
 import { ArrowsAltOutlined, CloseOutlined, FullscreenExitOutlined, FullscreenOutlined, LinkOutlined, ShrinkOutlined } from '@ant-design/icons';
+import { EventEmitter } from 'events'
 
-
-interface ChatSideDrawerProps {
+interface EventData {
+  isShowChatDrawer: boolean;
 }
 
-const ChatSideDrawer: React.FC<ChatSideDrawerProps> = ({ }) => {
-  const [isOpen, setIsOpen] = useState(window.showChatDrawer)
+interface ChatSideDrawerProps {
+  eventEmitter: EventEmitter
+}
+
+const ChatSideDrawer: React.FC<ChatSideDrawerProps> = ({ eventEmitter }) => {
+  const [isOpen, setIsOpen] = useState(false)
   const [width, setWidth] = useState('50%')
-  const [model, setModel] = useState(window.extensionAPI.settings.get('aiModel') as string)
-  const [openAiKey, setOpenAiKey] = useState(window.extensionAPI.settings.get('openAiKey') as string)
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      setIsOpen(window.showChatDrawer as boolean)
-      setModel(window.extensionAPI.settings.get('aiModel') as string)
-      setOpenAiKey(window.extensionAPI.settings.get('openAiKey') as string)
-    }, 100)
+    const eventHandler = (data: EventData) => {
+      console.log('received event', data)
+      setIsOpen(data.isShowChatDrawer)
+    }
+    eventEmitter.on('drawerEvent', eventHandler)
     return () => {
-      clearInterval(intervalId);
+      eventEmitter.off('drawerEvent', eventHandler)
     }
   }, [])
 
   const onClose = () => {
+    console.log('onclose called')
     setIsOpen(false)
-    window.showChatDrawer = false
   }
 
   return <>
@@ -36,9 +39,7 @@ const ChatSideDrawer: React.FC<ChatSideDrawerProps> = ({ }) => {
       title={'Roam GPT - Smart Assistant'}
       open={isOpen}
       width={width}
-      onClose={() => {
-        window.showChatDrawer = false
-      }}
+      onClose={onClose}
       extra={
         <Space>
           {width == "100%" ?
@@ -51,7 +52,7 @@ const ChatSideDrawer: React.FC<ChatSideDrawerProps> = ({ }) => {
         </Space>
       }
     >
-      <ChatProUI model={model} openAiKey={openAiKey}></ChatProUI>
+      <ChatProUI></ChatProUI>
     </Drawer >
   </>
 }

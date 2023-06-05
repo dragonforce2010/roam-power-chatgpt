@@ -10,8 +10,9 @@ const panelConfig: PanelConfig = {
       name: "Use My Own OpenAI key",
       description: "If you want to use your own Open AI key to get the best chatgpt experience, you need to set this to true. Believe me, if you use your own key, you will get better experience.",
       action: {
-        type: "switch"
-      }
+        type: "switch",
+      },
+
     },
     {
       id: PARAM_OPEN_AI_KEY,
@@ -19,8 +20,8 @@ const panelConfig: PanelConfig = {
       description: "Open Ai Key is used to interact with Open Ai Services. With your own open Ai key, you get better experience and performance. If you dont' have one, you can create API key here https://platform.openai.com/account/api-keys",
       action: {
         type: "input",
-        placeholder: "sk-xxxxxxxxxxxxxxxxxxxxxxx",
-      }
+        placeholder: "sk-xxxxxxxxxxxxxxxxxxxxxxxxx",
+      },
     }, {
       id: PARAM_AI_MODEL,
       name: "AI Model",
@@ -30,20 +31,12 @@ const panelConfig: PanelConfig = {
         items: [
           "gpt-3.5-turbo",
           "gpt-3.5-turbo-0301",
-          "text-davinci-003",
-          "text-davinci-002",
-          "text-davinci-001",
-          "text-curie-001",
-          "davinci-instruct-beta",
-          "text-babbage-001",
-          "text-ada-001",
-          "davinci",
-          "curie-instruct-beta",
-          "curie",
-          "ada",
-          "babbage",
+          "gpt-4",
+          "gpt-4-0314",
+          "gpt-4-32k",
+          "gpt-4-32k-0314"
         ],
-      }
+      },
     }
 
   ]

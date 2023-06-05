@@ -1,16 +1,16 @@
-import "../types"
-import { Drawer } from '@blueprintjs/core'
-import ReactDOM from 'react-dom'
+import { EventEmitter } from 'events'
 import React from 'react'
-import ChatSideDrawer from './chat-sidedrawer'
-import { init } from './store'
-import { loadSettings } from './panel-config'
+import ReactDOM from 'react-dom'
+import "../types"
 import { OnloadArgs } from '../types'
+import ChatSideDrawer from './chat-sidedrawer'
+import { loadSettings } from './panel-config'
+import { init } from './store'
 
+const eventEmitter = new EventEmitter()
 const command_name_chatgpt = 'Roam GPT'
 
 let root: HTMLElement;
-window.showChatDrawer = true;
 
 const addCommands = () => {
   window.roamAlphaAPI.ui
@@ -18,7 +18,8 @@ const addCommands = () => {
     .addCommand({
       label: command_name_chatgpt,
       callback: () => {
-        window.showChatDrawer = true
+        eventEmitter.emit('drawerEvent', { isShowChatDrawer: true })
+        console.log('event sent')
       }
     })
 }
@@ -41,7 +42,7 @@ function renderComponent() {
   }
 
   root = document.createElement('div')
-  ReactDOM.render(React.createElement(ChatSideDrawer), root)
+  ReactDOM.render(React.createElement(ChatSideDrawer, { eventEmitter }), root)
   document.body.append(root)
 }
 
